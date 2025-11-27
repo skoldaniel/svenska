@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skriv din recension</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background-color: #f7f9fc;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: #2c3e50;
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    main {
+      display: flex;
+      flex-wrap: wrap;
+      max-width: 1200px;
+      margin: 2rem auto;
+      gap: 2rem;
+      padding: 0 1rem;
+    }
+
+    .form-section {
+      flex: 1 1 500px;
+      background-color: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .preview {
+      flex: 1 1 400px;
+      background-color: #ffffff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      overflow-y: auto;
+      max-height: 80vh;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-top: 1.5rem;
+    }
+
+    textarea {
+      width: 100%;
+      height: 100px;
+      margin-top: 0.5rem;
+      padding: 0.8rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-family: inherit;
+      font-size: 1rem;
+      resize: vertical;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: #3498db;
+      box-shadow: 0 0 5px rgba(52,152,219,0.3);
+    }
+
+    button {
+      background-color: #3498db;
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 2rem;
+      font-size: 1rem;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #2c3e50;
+    }
+
+    .preview h2 {
+      border-bottom: 2px solid #eee;
+      padding-bottom: 0.5rem;
+    }
+
+    .preview p {
+      margin-bottom: 1.2rem;
+      white-space: pre-wrap;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      color: #777;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Skriv din recension</h1>
+    <p>Fyll i varje del – din text byggs upp parallellt till höger.</p>
+  </header>
+
+  <main>
+    <div class="form-section">
+      <section>
+        <h2>1. Inledning</h2>
+        <label for="intro">Hur vill du inleda din recension?</label>
+        <textarea id="intro" placeholder="Ex: Vad är FiveM? Varför valde du att recensera det?"></textarea>
+      </section>
+
+      <section>
+        <h2>2. Bakgrund & Beskrivning</h2>
+        <label for="description">Beskriv vad modden handlar om.</label>
+        <textarea id="description" placeholder="Förklara vad FiveM är och vad som gör det speciellt."></textarea>
+      </section>
+
+      <section>
+        <h2>3. Upplevelse & Analys</h2>
+        <label for="experience">Hur upplevde du att spela eller använda modden?</label>
+        <textarea id="experience" placeholder="Skriv om spelkänsla, community, buggar eller överraskningar."></textarea>
+      </section>
+
+      <section>
+        <h2>4. Omdöme</h2>
+        <label for="opinion">Vilket intryck fick du totalt sett?</label>
+        <textarea id="opinion" placeholder="Motivera vad du tycker och varför."></textarea>
+      </section>
+
+      <section>
+        <h2>5. Avslutning</h2>
+        <label for="conclusion">Hur vill du avrunda recensionen?</label>
+        <textarea id="conclusion" placeholder="Sammanfatta och ge ett sista intryck eller rekommendation."></textarea>
+      </section>
+
+      <button type="button" id="downloadBtn">Ladda ner min recension</button>
+    </div>
+
+    <div class="preview">
+      <h2>Din recension</h2>
+      <p id="previewText">Börja skriva till vänster – din text dyker upp här!</p>
+    </div>
+  </main>
+
+  <footer>
+    <p>Din text sparas inte automatiskt – kopiera den eller ladda ner innan du stänger sidan.</p>
+  </footer>
+
+  <script>
+    const fields = ["intro", "description", "experience", "opinion", "conclusion"];
+    const preview = document.getElementById("previewText");
+    const downloadBtn = document.getElementById("downloadBtn");
+
+    // Uppdatera förhandsvisningen i realtid
+    fields.forEach(id => {
+      document.getElementById(id).addEventListener("input", updatePreview);
+    });
+
+    function updatePreview() {
+      const textParts = fields.map(id => document.getElementById(id).value.trim());
+      const fullText = textParts.filter(p => p).join("\n\n");
+      preview.textContent = fullText || "Börja skriva till vänster – din text dyker upp här!";
+    }
+
+    // Möjlighet att ladda ner recensionen som .txt-fil
+    downloadBtn.addEventListener("click", () => {
+      const textParts = fields.map(id => document.getElementById(id).value.trim());
+      const fullText = textParts.filter(p => p).join("\n\n");
+      const blob = new Blob([fullText], { type: "text/plain;charset=utf-8" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "min_recension.txt";
+      link.click();
+    });
+  </script>
+</body>
+</html>
